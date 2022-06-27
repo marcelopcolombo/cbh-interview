@@ -8,9 +8,9 @@ describe("deterministicPartitionKey", () => {
   });
 
   it("Returns the hash from event input object", () => {
-    const key = 'qwerty';
+    const key = { test: 0 };
     const trivialKey = deterministicPartitionKey(key);
-    const toBe = crypto.createHash("sha3-512").update(key).digest("hex")
+    const toBe = crypto.createHash("sha3-512").update(JSON.stringify(key)).digest("hex")
     expect(trivialKey).toBe(toBe);
   });
 
