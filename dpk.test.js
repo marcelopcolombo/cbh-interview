@@ -8,9 +8,9 @@ describe("deterministicPartitionKey", () => {
   });
 
   it("Returns the hash from event input object", () => {
-    const key = { test : '2'};
+    const key = 'qwerty';
     const trivialKey = deterministicPartitionKey(key);
-    const toBe = crypto.createHash("sha3-512").update(JSON.stringify(key)).digest("hex")
+    const toBe = crypto.createHash("sha3-512").update(key).digest("hex")
     expect(trivialKey).toBe(toBe);
   });
 
@@ -18,20 +18,27 @@ describe("deterministicPartitionKey", () => {
     const key = { partitionKey : '2'};
     const trivialKey = deterministicPartitionKey(key);
     const toBe = crypto.createHash("sha3-512").update(key.partitionKey).digest("hex")
-    expect(trivialKey).toBe(toBe);
+    expect(trivialKey).toBe('2');
   });
 
   it("Returns the hash from event.partitionKey input object - converting to string", () => {
     const key = { partitionKey : 2};
     const trivialKey = deterministicPartitionKey(key);
-    const toBe = crypto.createHash("sha3-512").update(JSON.stringify(key.partitionKey)).digest("hex")
-    expect(trivialKey).toBe(toBe);
+    expect(trivialKey).toBe('2');
   });
 
-  it("Returns the hash from event input object - converting to string", () => {
-    const key = { test : 2};
+  it("Returns the hash from event.partitionKey input object - hash if > than 256", () => {
+    const key = { partitionKey : `
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      aaaaaaaaaaa
+    `};
     const trivialKey = deterministicPartitionKey(key);
-    const toBe = crypto.createHash("sha3-512").update(JSON.stringify(key)).digest("hex")
+    const toBe = crypto.createHash("sha3-512").update(key.partitionKey).digest("hex")
     expect(trivialKey).toBe(toBe);
   });
 });

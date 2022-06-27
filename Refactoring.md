@@ -9,7 +9,6 @@ You've been asked to refactor the function `deterministicPartitionKey` in [`dpk.
 You will be graded on the exhaustiveness and quality of your unit tests, the depth of your refactor, and the level of insight into your thought process provided by the written explanation.
 
 ## Your Explanation Here
-- I saw that every candidate was based on the presence of event or event.partitionKey so I created the `getPartitionKey` method
-- also, I centralized the stringify method in just one if, in case of the presence of a partitionKey that is not of type string.
-- I removed the MAX_PARTITION_KEY_LENGTH because I'm always returning the hash result if there is a partitionKey.
-- and finally if there is no results for partitionKey I return the constant TRIVIAL_PARTITION_KEY that I moved to a `constants.js` file.
+- I saw that every candidate was based on the presence of event or event.partitionKey so I created the `getPartitionKey` method to handle the event first
+- then if event is not present i just retrieve the constant TRIVIAL_PARTITION_KEY that I moved to a `constants.js` file.
+- for partitionKeys that are greater then the MAX_PARTITION_KEY_LENGTH I apply the hash method.
